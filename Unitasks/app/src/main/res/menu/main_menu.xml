@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+    <menu xmlns:app="http://schemas.android.com/apk/res-auto"
+
+        xmlns:android="http://schemas.android.com/apk/res/android">
+        <item
+            android:id="@+id/profile"
+            android:icon="@drawable/baseline_manage_accounts_black_36"
+            android:title="@string/profile"
+            android:visible="true"
+            app:showAsAction="never" />
+        <item
+            android:id="@+id/share"
+            android:icon="@drawable/outline_share_black_36"
+            android:title="@string/share"
+            app:showAsAction="never" />
+        <item
+
+            android:id="@+id/logout"
+            android:icon="@drawable/outline_logout_black_36"
+            android:title="@string/log_out"
+            app:showAsAction="never"
+
+            />
+    </menu>
