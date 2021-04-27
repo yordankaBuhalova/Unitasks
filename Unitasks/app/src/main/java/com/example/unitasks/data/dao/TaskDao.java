@@ -1,4 +1,34 @@
 package com.example.unitasks.data.dao;
 
-public class TaskDao {
+import androidx.lifecycle.LiveData;
+import androidx.room.Dao;
+import androidx.room.Delete;
+import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
+import androidx.room.Query;
+
+import com.example.unitasks.data.model.Task;
+
+import java.util.List;
+
+@Dao
+public interface TaskDao {
+
+    @Query("SELECT * FROM task")
+    LiveData<List<Task>> getAll();
+
+    @Query("SELECT * FROM task WHERE id IN (:taskIds)")
+    LiveData<List<Task>> loadAllByIds(int[] taskIds);
+
+    @Insert
+    void insertAll(Task... tasks);
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    void insert(Task task);
+
+    @Delete
+    void delete(Task task);
+
+    @Query("DELETE FROM task")
+    void deleteAll();
 }
