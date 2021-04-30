@@ -1,9 +1,14 @@
 package com.example.unitasks.data.model;
 
-import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
 
+
+import com.example.unitasks.data.converters.DateConverter;
+import com.example.unitasks.data.converters.TimeConverter;
+
+import java.io.Serializable;
 import java.sql.Time;
 import java.util.Date;
 import java.util.Objects;
@@ -11,15 +16,17 @@ import java.util.Objects;
 @Entity
 public class Task {
     @PrimaryKey(autoGenerate = true)
-    @NonNull
     public int id;
 
     public String course_name;
     public String profesor_name;
     public int week_num;
-    public Date date;
+    @TypeConverters(TimeConverter.class)
     public Time time;
-    public Task() {}
+    @TypeConverters(DateConverter.class)
+    public Date date;
+
+    public Task(Serializable serializableExtra) {}
 
     public Task(String course_name, String profesor_name, int week_num, Date date, Time time) {
         this.course_name = course_name;
@@ -30,7 +37,19 @@ public class Task {
     }
 
     public String getTask() {
-        return this.course_name;
+        return this.profesor_name;
+    }
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "id=" + id +
+                ", course_name='" + course_name + '\'' +
+                ", profesor_name='" + profesor_name + '\'' +
+                ", week_num=" + week_num +
+                ", time=" + time +
+                ", date=" + date +
+                '}';
     }
 
     @Override
@@ -41,11 +60,13 @@ public class Task {
         return id == task.id &&
                 week_num == task.week_num &&
                 course_name.equals(task.course_name) &&
-                profesor_name.equals(task.profesor_name);
+                profesor_name.equals(task.profesor_name)&&
+                date.equals(task.date)&&
+                time.equals(task.time);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, course_name, profesor_name, week_num);
+        return Objects.hash(id, course_name, profesor_name, week_num, date, time);
     }
 }

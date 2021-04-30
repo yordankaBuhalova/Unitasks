@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private TasksViewModel tasksViewModel;
     private CalendarView calendar;
     private TextView day;
+    private TextView textView19;
 
     public static final int NEW_TASK_ACTIVITY_REQUEST_CODE = 1;
 
@@ -45,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
         calendar = findViewById(R.id.calendarView);
+        textView19 = findViewById(R.id.textView19);
 
         long selectedDate = calendar.getDate();
         day = findViewById(R.id.day);
@@ -78,6 +80,10 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, AddTaskActivity.class);
             startActivityForResult(intent, NEW_TASK_ACTIVITY_REQUEST_CODE);
         });
+        /**textView19.setOnClickListener(view ->{
+            Intent intent = new Intent(MainActivity.this, TaskActivity.class);
+            startActivityForResult(intent, NEW_TASK_ACTIVITY_REQUEST_CODE);
+        });**/
     }
 
     @Override
@@ -96,8 +102,8 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == NEW_TASK_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
-            Task word = new Task(data.getStringExtra(AddTaskActivity.EXTRA_REPLY), "", 1);
-            tasksViewModel.insert(word);
+            Task task = new Task(data.getSerializableExtra(AddTaskActivity.EXTRA_REPLY));
+            tasksViewModel.insert(task);
         } else {
             Toast.makeText(
                     getApplicationContext(),

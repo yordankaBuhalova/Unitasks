@@ -14,7 +14,7 @@ import com.example.unitasks.data.model.Task;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {Task.class}, version = 1)
+@Database(entities = {Task.class}, version = 2)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract TaskDao taskDao();
 
@@ -28,7 +28,9 @@ public abstract class AppDatabase extends RoomDatabase {
             synchronized (AppDatabase.class) {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
-                            AppDatabase.class, "tasks").addCallback(sAppDatabaseCallback)
+                            AppDatabase.class, "tasks")
+                            .addCallback(sAppDatabaseCallback)
+                            .allowMainThreadQueries()
                             .build();
                 }
             }
@@ -43,17 +45,17 @@ public abstract class AppDatabase extends RoomDatabase {
 
             // If you want to keep data through app restarts,
             // comment out the following block
-            databaseWriteExecutor.execute(() -> {
+            /** databaseWriteExecutor.execute(() -> {
                 // Populate the database in the background.
                 // If you want to start with more words, just add them.
-                TaskDao dao = INSTANCE.taskDao();
+                 TaskDao dao = INSTANCE.taskDao();
                 dao.deleteAll();
 
-                Task word = new Task("Test", "Testov", 1);
-                dao.insert(word);
-                word = new Task("World", "Tester", 2);
-                dao.insert(word);
-            });
+                Task task= new Task("Test", "Testov", 1, '333','13:00');
+                dao.insert(task);
+                task = new Task("World", "Tester",2);
+                dao.insert(task);
+            });**/
         }
     };
 }
