@@ -47,7 +47,7 @@ public class Task {
     }
 
     public String getTask() {
-        SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm", Locale.getDefault());
+        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
         return timeFormat.format(this.time) + "  " + this.course_name ;
     }
 

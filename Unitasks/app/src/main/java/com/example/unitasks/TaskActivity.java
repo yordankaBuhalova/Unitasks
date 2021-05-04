@@ -4,7 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 
+import android.app.Application;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,9 +27,14 @@ public class TaskActivity extends AppCompatActivity {
         setSupportActionBar(mToolbar);
         Intent i = this.getIntent();
         String taskName = i.getStringExtra("task");
-        //TaskRepository taskRepository = new TaskRepository(getApplication());
-        //LiveData<List<Task>> tasks = taskRepository.getTaskByName(taskName);
-        //Log.e("tasks", tasks.getValue().toString());
+        TaskRepository taskRepository = new TaskRepository((Application) getApplicationContext());
+        String hour = taskName.split("  ")[0];
+        taskName = taskName.split("  ")[1];
+        LiveData<List<Task>> tasks = taskRepository.getTaskByName(taskName);
+        Observer<List<Task>> o = task -> {
+            Log.e("tasks", task.toString());
+        };
+        tasks.observe(this, o);
     }
 
     @Override

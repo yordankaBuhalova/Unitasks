@@ -6,6 +6,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.room.Room;
 import androidx.room.TypeConverters;
 
+import android.app.Application;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
@@ -23,6 +24,7 @@ import android.widget.TimePicker;
 import com.example.unitasks.data.AppDatabase;
 import com.example.unitasks.data.converters.TimeConverter;
 import com.example.unitasks.data.model.Task;
+import com.example.unitasks.data.repositories.TaskRepository;
 
 import java.sql.Time;
 import java.text.SimpleDateFormat;
@@ -87,7 +89,8 @@ public class AddTaskActivity extends AppCompatActivity {
                     Log.i("task", task.toString());
 
                     assert task != null;
-                    AppDatabase.getDatabase(getApplicationContext()).taskDao().insert(task);
+                    TaskRepository taskRepository = new TaskRepository((Application) getApplicationContext());
+                    taskRepository.insert(task);
                 } catch (Exception e) {
                     Log.e("error", e.getMessage());
                 }
@@ -128,12 +131,7 @@ public class AddTaskActivity extends AppCompatActivity {
             int year = cldr.get(Calendar.YEAR);
             // date picker dialog
             picker_date = new DatePickerDialog(AddTaskActivity.this,
-                    new DatePickerDialog.OnDateSetListener() {
-                        @Override
-                        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                            dateText.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
-                        }
-                    }, year, month, day);
+                    (view, year1, monthOfYear, dayOfMonth) -> dateText.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year1), year, month, day);
             picker_date.show();
         });
 
