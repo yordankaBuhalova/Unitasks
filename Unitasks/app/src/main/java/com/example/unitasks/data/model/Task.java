@@ -10,8 +10,18 @@ import com.example.unitasks.data.converters.TimeConverter;
 
 import java.io.Serializable;
 import java.sql.Time;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Objects;
+import java.util.TimeZone;
+
+import static com.example.unitasks.data.converters.TimeConverter.fromTime;
+import static com.example.unitasks.data.converters.TimeConverter.toTime;
 
 @Entity
 public class Task {
@@ -37,7 +47,8 @@ public class Task {
     }
 
     public String getTask() {
-        return this.profesor_name;
+        SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm", Locale.getDefault());
+        return timeFormat.format(this.time) + "  " + this.course_name ;
     }
 
     @Override

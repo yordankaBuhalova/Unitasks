@@ -7,8 +7,12 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.widget.CalendarView;
@@ -35,7 +39,8 @@ public class MainActivity extends AppCompatActivity {
     private TasksViewModel tasksViewModel;
     private CalendarView calendar;
     private TextView day;
-    private TextView textView19;
+    private TextView task_details;
+    private Date date;
 
     public static final int NEW_TASK_ACTIVITY_REQUEST_CODE = 1;
 
@@ -43,10 +48,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
         calendar = findViewById(R.id.calendarView);
-        textView19 = findViewById(R.id.textView19);
+
 
         long selectedDate = calendar.getDate();
         day = findViewById(R.id.day);
@@ -58,9 +64,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onSelectedDayChange(CalendarView view, int year, int month,
                                             int dayOfMonth) {
-                Date date = new GregorianCalendar(year, month, dayOfMonth).getTime();
+                date = new GregorianCalendar(year, month, dayOfMonth).getTime();
                 String newDayOfWeek = new SimpleDateFormat("EEEE").format(date);
                 day.setText(newDayOfWeek);
+
             }
         });
 
@@ -71,19 +78,17 @@ public class MainActivity extends AppCompatActivity {
 
         tasksViewModel = new ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(this.getApplication())).get(TasksViewModel.class);
         tasksViewModel.getAllTasks().observe(this, tasks -> {
-            // Update the cached copy of the words in the adapter.
+            // Update the cached copy of the tasks in the adapter.
+
             adapter.submitList(tasks);
         });
 
-        FloatingActionButton fab = findViewById(R.id.add_book);
+        FloatingActionButton fab = findViewById(R.id.add_task);
         fab.setOnClickListener( view -> {
             Intent intent = new Intent(MainActivity.this, AddTaskActivity.class);
             startActivityForResult(intent, NEW_TASK_ACTIVITY_REQUEST_CODE);
         });
-        /**textView19.setOnClickListener(view ->{
-            Intent intent = new Intent(MainActivity.this, TaskActivity.class);
-            startActivityForResult(intent, NEW_TASK_ACTIVITY_REQUEST_CODE);
-        });**/
+
     }
 
     @Override

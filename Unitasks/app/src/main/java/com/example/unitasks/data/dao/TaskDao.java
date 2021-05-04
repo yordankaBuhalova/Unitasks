@@ -20,6 +20,9 @@ public interface TaskDao {
     @Query("SELECT * FROM task WHERE id IN (:taskIds)")
     LiveData<List<Task>> loadAllByIds(int[] taskIds);
 
+    @Query("SELECT * FROM task WHERE course_name LIKE :taskNames LIMIT 1")
+    LiveData<List<Task>> loadByName(String taskNames);
+
     @Insert
     void insertAll(Task... tasks);
 

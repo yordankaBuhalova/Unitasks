@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.widget.Toolbar;
 import androidx.room.Room;
+import androidx.room.TypeConverters;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -20,6 +21,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.example.unitasks.data.AppDatabase;
+import com.example.unitasks.data.converters.TimeConverter;
 import com.example.unitasks.data.model.Task;
 
 import java.sql.Time;
@@ -44,7 +46,6 @@ public class AddTaskActivity extends AppCompatActivity {
     private EditText eText;
     private EditText dateText;
     private Button btnGet;
-    private TextView tvw;
     private Task task;
 
 
@@ -59,6 +60,7 @@ public class AddTaskActivity extends AppCompatActivity {
         week_num = findViewById(R.id.week_num);
         task_date = findViewById(R.id.date);
         task_time = findViewById(R.id.time);
+
         final Button button = findViewById(R.id.button_save);
         button.setOnClickListener(view -> {
             Intent replyIntent = new Intent();
@@ -78,6 +80,8 @@ public class AddTaskActivity extends AppCompatActivity {
                     Date d1 = timeFormat.parse(task_time.getText().toString());
                     assert d1 != null;
                     time = new Time(d1.getTime());
+                    System.out.print(time);
+
 
                     task = new Task(course, professor, Integer.parseInt(num), date, time);
                     Log.i("task", task.toString());
@@ -132,6 +136,7 @@ public class AddTaskActivity extends AppCompatActivity {
                     }, year, month, day);
             picker_date.show();
         });
+
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

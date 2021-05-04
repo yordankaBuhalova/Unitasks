@@ -26,6 +26,10 @@ public class TaskRepository {
         return mAllTasks;
     }
 
+    public LiveData<List<Task>> getTaskByName(String taskName) {
+        return taskDao.loadByName(taskName);
+    }
+
     // You must call this on a non-UI thread or your app will throw an exception. Room ensures
     // that you're not doing any long running operations on the main thread, blocking the UI.
     public void insert(Task task) {

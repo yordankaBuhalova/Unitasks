@@ -10,6 +10,7 @@ import com.example.unitasks.data.model.Task;
 import com.example.unitasks.data.repositories.TaskRepository;
 
 
+import java.util.Date;
 import java.util.List;
 
 public class TasksViewModel extends AndroidViewModel {
@@ -22,7 +23,8 @@ public class TasksViewModel extends AndroidViewModel {
         mAllTasks = mRepository.getAllTasks();
     }
 
-    public LiveData<List<Task>> getAllTasks() { return mAllTasks; }
+    public LiveData<List<Task>> getAllTasks() {
+        return mAllTasks; }
 
     public void insert(Task task) { mRepository.insert(task); }
 }
