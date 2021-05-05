@@ -79,7 +79,6 @@ public class MainActivity extends AppCompatActivity {
         tasksViewModel = new ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(this.getApplication())).get(TasksViewModel.class);
         tasksViewModel.getAllTasks().observe(this, tasks -> {
             // Update the cached copy of the tasks in the adapter.
-
             adapter.submitList(tasks);
         });
 

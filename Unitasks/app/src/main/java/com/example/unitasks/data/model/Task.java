@@ -63,6 +63,13 @@ public class Task {
                 '}';
     }
 
+    public String toNiceString() {
+        return "Course name:'" + course_name + "' \n" +
+                "Professor name:'" + profesor_name + "'\n" +
+                "Time: " + time + "\n" +
+                "Date: " + date;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
 import android.view.Menu;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -30,6 +31,7 @@ public class TaskActivity extends AppCompatActivity {
     private Button delete;
     private Button edit;
     private Task task;
+    private Button sharingButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,6 +105,13 @@ public class TaskActivity extends AppCompatActivity {
             startActivityForResult(intent, MAIN_ACTIVITY_REQUEST_CODE);
             finish();
         });
+
+        sharingButton = findViewById(R.id.share);
+        sharingButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                shareIt(task);
+            }
+        });
     }
 
     @Override
@@ -115,5 +124,13 @@ public class TaskActivity extends AppCompatActivity {
             m.setOptionalIconsVisible(true);
         }
         return true;
+    }
+    private void shareIt(Task task) {
+    //sharing implementation here
+        Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+        sharingIntent.setType("text/plain");
+        sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, task.course_name);
+        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, task.toNiceString());
+        startActivity(Intent.createChooser(sharingIntent, "Share via"));
     }
 }
