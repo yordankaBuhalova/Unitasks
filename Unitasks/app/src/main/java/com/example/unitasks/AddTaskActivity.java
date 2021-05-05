@@ -3,6 +3,8 @@ package com.example.unitasks;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 import androidx.room.Room;
 import androidx.room.TypeConverters;
 
@@ -30,6 +32,7 @@ import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 public class AddTaskActivity extends AppCompatActivity {
@@ -47,7 +50,6 @@ public class AddTaskActivity extends AppCompatActivity {
     private TimePickerDialog picker;
     private EditText eText;
     private EditText dateText;
-    private Button btnGet;
     private Task task;
 
 
@@ -62,35 +64,59 @@ public class AddTaskActivity extends AppCompatActivity {
         week_num = findViewById(R.id.week_num);
         task_date = findViewById(R.id.date);
         task_time = findViewById(R.id.time);
+        final Button save = findViewById(R.id.button_save);
+        TaskRepository taskRepository = new TaskRepository((Application) getApplicationContext());
+        String taskName = getIntent().getStringExtra("task");
 
-        final Button button = findViewById(R.id.button_save);
-        button.setOnClickListener(view -> {
+        SimpleDateFormat formatter1= new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm", Locale.getDefault());
+
+        if(taskName != null) {
+            LiveData<List<Task>> tasks = taskRepository.getTaskByName(taskName);
+            Observer<List<Task>> o = tasks1 -> {
+                if(!tasks1.isEmpty()) {
+                    Task tmp = tasks1.get(0);
+                    task = tmp;
+                    course_name.setText(task.course_name, TextView.BufferType.EDITABLE);
+                    professor_name.setText(task.profesor_name, TextView.BufferType.EDITABLE);
+                    task_date.setText(formatter1.format(task.date), TextView.BufferType.EDITABLE);
+                    task_time.setText(timeFormat.format(task.time), TextView.BufferType.EDITABLE);
+                }
+            };
+            tasks.observe(this, o);
+        }
+
+        save.setOnClickListener(view -> {
             Intent replyIntent = new Intent();
             if (TextUtils.isEmpty(course_name.getText())) {
                 setResult(RESULT_CANCELED, replyIntent);
             }
             else {
-                SimpleDateFormat formatter1= new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-                SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm", Locale.getDefault());
                 String course = course_name.getText().toString();
                 String professor = professor_name.getText().toString();
                 String num = week_num.getText().toString();
-                Date date = null;
-                Time time = null;
+                Date date;
+                Time time;
                 try {
                     date = formatter1.parse((task_date.getText().toString()));
                     Date d1 = timeFormat.parse(task_time.getText().toString());
                     assert d1 != null;
                     time = new Time(d1.getTime());
-                    System.out.print(time);
 
-
-                    task = new Task(course, professor, Integer.parseInt(num), date, time);
-                    Log.i("task", task.toString());
-
-                    assert task != null;
-                    TaskRepository taskRepository = new TaskRepository((Application) getApplicationContext());
-                    taskRepository.insert(task);
+                    if(task == null) {
+                        task = new Task(course, professor, Integer.parseInt(num), date, time);
+                        taskRepository.insert(task);
+                    }
+                    else {
+                        task.course_name = course;
+                        task.profesor_name = professor;
+                        task.time = time;
+                        task.date = date;
+                        taskRepository.update(task);
+                    }
+                    Intent intent = new Intent(AddTaskActivity.this, TaskActivity.class);
+                    intent.putExtra("task", task.course_name);
+                    startActivity(intent);
                 } catch (Exception e) {
                     Log.e("error", e.getMessage());
                 }
@@ -113,12 +139,7 @@ public class AddTaskActivity extends AppCompatActivity {
             int minutes = cldr.get(Calendar.MINUTE);
             // time picker dialog
             picker = new TimePickerDialog(AddTaskActivity.this,
-                    new TimePickerDialog.OnTimeSetListener() {
-                        @Override
-                        public void onTimeSet(TimePicker tp, int sHour, int sMinute) {
-                            eText.setText(sHour + ":" + sMinute);
-                        }
-                    }, hour, minutes, true);
+                    (tp, sHour, sMinute) -> eText.setText(sHour + ":" + sMinute), hour, minutes, true);
             picker.show();
         });
 
@@ -134,6 +155,7 @@ public class AddTaskActivity extends AppCompatActivity {
                     (view, year1, monthOfYear, dayOfMonth) -> dateText.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year1), year, month, day);
             picker_date.show();
         });
+
 
     }
     @Override

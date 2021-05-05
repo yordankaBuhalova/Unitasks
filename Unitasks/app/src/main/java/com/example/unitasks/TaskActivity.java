@@ -11,6 +11,7 @@ import android.app.Application;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.Menu;
 import android.widget.Button;
@@ -19,6 +20,7 @@ import android.widget.TextView;
 import com.example.unitasks.data.model.Task;
 import com.example.unitasks.data.repositories.TaskRepository;
 
+import java.io.Serializable;
 import java.util.List;
 
 public class TaskActivity extends AppCompatActivity {
@@ -26,6 +28,7 @@ public class TaskActivity extends AppCompatActivity {
     private Toolbar mToolbar;
     private Button back;
     private Button delete;
+    private Button edit;
     private Task task;
 
     @Override
@@ -39,8 +42,10 @@ public class TaskActivity extends AppCompatActivity {
         // Get task
         String taskName = i.getStringExtra("task");
         TaskRepository taskRepository = new TaskRepository((Application) getApplicationContext());
-        String hour = taskName.split("  ")[0];
-        taskName = taskName.split("  ")[1];
+        if(taskName.contains("  ")) {
+            String hour = taskName.split("  ")[0];
+            taskName = taskName.split("  ")[1];
+        }
         LiveData<List<Task>> tasks = taskRepository.getTaskByName(taskName);
         Observer<List<Task>> o = tasks1 -> {
             if(!tasks1.isEmpty()) {
@@ -78,6 +83,14 @@ public class TaskActivity extends AppCompatActivity {
                 delete = findViewById(R.id.delete);
                 delete.setOnClickListener(view -> {
                     dialog.show();
+                });
+
+                // edit button mapper
+                edit = findViewById(R.id.edit);
+                edit.setOnClickListener(view -> {
+                    Intent intent = new Intent(TaskActivity.this, AddTaskActivity.class);
+                    intent.putExtra("task", task.course_name);
+                    startActivityForResult(intent, MAIN_ACTIVITY_REQUEST_CODE);
                 });
             }
         };

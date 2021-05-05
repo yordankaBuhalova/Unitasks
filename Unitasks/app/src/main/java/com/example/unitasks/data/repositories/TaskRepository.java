@@ -38,6 +38,10 @@ public class TaskRepository {
         });
     }
 
+    public void update(Task task) {
+        taskDao.updateTask(task);
+    }
+
     public void delete(Task task) {
         taskDao.delete(task);
     }
