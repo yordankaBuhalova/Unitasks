@@ -12,7 +12,6 @@ public class TimeConverter {
 
     @TypeConverter
     public static Long fromTime(Time time) {
-
         return time == null ? null : time.toInstant().getEpochSecond();
     }
 

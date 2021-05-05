@@ -37,4 +37,8 @@ public class TaskRepository {
             taskDao.insertAll(task);
         });
     }
+
+    public void delete(Task task) {
+        taskDao.delete(task);
+    }
 }

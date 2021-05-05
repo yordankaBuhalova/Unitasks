@@ -15,6 +15,13 @@
         android:backgroundTint="@color/purple_500"
         tools:targetApi="lollipop">
 
+        <Button
+            android:id="@+id/back_to_main"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:icon="@drawable/abc_vector_test"
+            app:iconTint="@color/buttonLabel" />
+
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
