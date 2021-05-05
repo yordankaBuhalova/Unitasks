@@ -7,39 +7,30 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.View;
 import android.widget.CalendarView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.unitasks.data.AppDatabase;
-import com.example.unitasks.data.dao.TaskDao;
+import com.example.unitasks.data.converters.DateConverter;
 import com.example.unitasks.data.model.Task;
-import com.example.unitasks.data.repositories.TaskRepository;
 import com.example.unitasks.data.views.TasksViewModel;
 import com.example.unitasks.ui.adapters.TaskListAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private Toolbar mToolbar;
     private TasksViewModel tasksViewModel;
     private CalendarView calendar;
     private TextView day;
-    private TextView task_details;
+    private TaskListAdapter adapter;
     private Date date;
 
     public static final int NEW_TASK_ACTIVITY_REQUEST_CODE = 1;
@@ -59,28 +50,29 @@ public class MainActivity extends AppCompatActivity {
         String dayOfWeek = new SimpleDateFormat("EEEE").format(new Date(selectedDate));
         day.setText(dayOfWeek);
 
-        calendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
-
-            @Override
-            public void onSelectedDayChange(CalendarView view, int year, int month,
-                                            int dayOfMonth) {
-                date = new GregorianCalendar(year, month, dayOfMonth).getTime();
-                String newDayOfWeek = new SimpleDateFormat("EEEE").format(date);
-                day.setText(newDayOfWeek);
-
-            }
+        calendar.setOnDateChangeListener((view, year, month, dayOfMonth) -> {
+            date = new GregorianCalendar(year, month, dayOfMonth).getTime();
+            String newDayOfWeek = new SimpleDateFormat("EEEE").format(date);
+            day.setText(newDayOfWeek);
+            updateDate();
         });
 
         RecyclerView recyclerView = findViewById(R.id.rec_view);
-        final TaskListAdapter adapter = new TaskListAdapter(new TaskListAdapter.TaskDiff());
+        adapter = new TaskListAdapter(new TaskListAdapter.TaskDiff());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        tasksViewModel = new ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(this.getApplication())).get(TasksViewModel.class);
-        tasksViewModel.getAllTasks().observe(this, tasks -> {
-            // Update the cached copy of the tasks in the adapter.
-            adapter.submitList(tasks);
-        });
+        if(date == null) {
+            // today
+            Calendar today = new GregorianCalendar();
+            // reset hour, minutes, seconds and millis
+            today.set(Calendar.HOUR_OF_DAY, 0);
+            today.set(Calendar.MINUTE, 0);
+            today.set(Calendar.SECOND, 0);
+            today.set(Calendar.MILLISECOND, 0);
+            date = today.getTime();
+        }
+        updateDate();
 
         FloatingActionButton fab = findViewById(R.id.add_task);
         fab.setOnClickListener( view -> {
@@ -115,6 +107,13 @@ public class MainActivity extends AppCompatActivity {
                     Toast.LENGTH_LONG).show();
         }
     }
-    
+
+    private void updateDate() {
+        tasksViewModel = new ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(this.getApplication())).get(TasksViewModel.class);
+        tasksViewModel.getTasksByDate(date).observe(this, tasks -> {
+            // Update the cached copy of the tasks in the adapter.
+            adapter.submitList(tasks);
+        });
+    }
 }
 

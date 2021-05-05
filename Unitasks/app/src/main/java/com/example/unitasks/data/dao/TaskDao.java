@@ -10,6 +10,8 @@ import androidx.room.Update;
 
 import com.example.unitasks.data.model.Task;
 
+import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.List;
 
 @Dao
@@ -23,6 +25,9 @@ public interface TaskDao {
 
     @Query("SELECT * FROM task WHERE course_name LIKE :taskNames LIMIT 1")
     LiveData<List<Task>> loadByName(String taskNames);
+
+    @Query("SELECT * FROM task WHERE date=:date")
+    LiveData<List<Task>> loadByDate(long date);
 
     @Insert
     void insertAll(Task... tasks);

@@ -1,13 +1,16 @@
 package com.example.unitasks.data.repositories;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 
 import com.example.unitasks.data.AppDatabase;
+import com.example.unitasks.data.converters.DateConverter;
 import com.example.unitasks.data.dao.TaskDao;
 import com.example.unitasks.data.model.Task;
 
+import java.util.Date;
 import java.util.List;
 
 public class TaskRepository {
@@ -24,6 +27,11 @@ public class TaskRepository {
     // Observed LiveData will notify the observer when the data has changed.
     public LiveData<List<Task>> getAllTasks() {
         return mAllTasks;
+    }
+
+    public LiveData<List<Task>> getTasksByDate(Date date) {
+        Log.e("date", String.valueOf(new DateConverter().fromDate(date)));
+        return taskDao.loadByDate(new DateConverter().fromDate(date));
     }
 
     public LiveData<List<Task>> getTaskByName(String taskName) {

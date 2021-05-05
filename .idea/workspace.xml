@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="71483a33-2988-4d1f-b650-18689caf90e6" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/Unitasks/app/src/main/java/com/example/unitasks/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/Unitasks/app/src/main/java/com/example/unitasks/MainActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Unitasks/app/src/main/java/com/example/unitasks/data/converters/TimeConverter.java" beforeDir="false" afterPath="$PROJECT_DIR$/Unitasks/app/src/main/java/com/example/unitasks/data/converters/TimeConverter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Unitasks/app/src/main/java/com/example/unitasks/data/dao/TaskDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/Unitasks/app/src/main/java/com/example/unitasks/data/dao/TaskDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Unitasks/app/src/main/java/com/example/unitasks/data/repositories/TaskRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/Unitasks/app/src/main/java/com/example/unitasks/data/repositories/TaskRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Unitasks/app/src/main/java/com/example/unitasks/data/views/TasksViewModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/Unitasks/app/src/main/java/com/example/unitasks/data/views/TasksViewModel.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1s8HRV24CuQLlVCOd67HcypITTn" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="android.sdk.path" value="$USER_HOME$/AppData/Local/Android/Sdk" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/Unitasks" />
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="71483a33-2988-4d1f-b650-18689caf90e6" name="Default Changelist" comment="" />
+      <created>1620247288678</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1620247288678</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="421" y="95" key="FileChooserDialogImpl" timestamp="1620247408561">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state x="421" y="95" key="FileChooserDialogImpl/0.0.1280.680@0.0.1280.680" timestamp="1620247408561" />
+  </component>
+</project>

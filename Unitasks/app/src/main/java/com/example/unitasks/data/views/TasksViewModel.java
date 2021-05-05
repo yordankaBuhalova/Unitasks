@@ -24,7 +24,12 @@ public class TasksViewModel extends AndroidViewModel {
     }
 
     public LiveData<List<Task>> getAllTasks() {
-        return mAllTasks; }
+        return mAllTasks;
+    }
+
+    public LiveData<List<Task>> getTasksByDate(Date date) {
+        return mRepository.getTasksByDate(date);
+    }
 
     public void insert(Task task) { mRepository.insert(task); }
 }
